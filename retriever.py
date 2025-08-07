@@ -10,9 +10,9 @@ def retrieve_top_k(query: str,
                    collection_name: str = None) -> list[str]:
     """
     1) embedding_user_input으로 query 임베딩
-    2) embedded_scripts 컬렉션에서 저장된 embedding들과
+    2) embedded_opic_samples 컬렉션에서 저장된 embedding들과
        코사인 유사도를 계산해
-    3) 상위 k개 line을 반환합니다.
+    3) 상위 k개 content를 반환합니다.
     """
     # 기본값 설정
     if model_path is None:
@@ -26,12 +26,12 @@ def retrieve_top_k(query: str,
         if col is None:
             return []
             
-        docs = list(col.find({}, {"line": 1, "embedding": 1}))
+        docs = list(col.find({}, {"content": 1, "embedding": 1}))
         if not docs:
             print(f"컬렉션 '{collection_name}'에서 데이터를 찾을 수 없습니다.")
             return []
 
-        lines = [d["line"] for d in docs]
+        contents = [d["content"] for d in docs]
         embeddings = np.array([d["embedding"] for d in docs])  # (N, D)
 
         # 2) query 임베딩 (기존 embedding_user_input 재사용)
@@ -42,7 +42,7 @@ def retrieve_top_k(query: str,
         sims = cosine_similarity(query_emb, embeddings)[0]      # (N, )
         idx_topk = np.argsort(sims)[::-1][:k]
         
-        return [lines[i] for i in idx_topk]
+        return [contents[i] for i in idx_topk]
         
     except Exception as e:
         print(f"retriever.py 오류: {e}")

@@ -85,8 +85,8 @@ else:
 def run_rag(question: str, k: int = 3) -> str:
     """RAG 시스템으로 질문에 답변합니다."""
     try:
-        if llm is None or chain is None:
-            return "RAG 시스템을 사용할 수 없습니다. 모델 또는 체인 로딩에 실패했습니다."
+        if llm is None:
+            return "RAG 시스템을 사용할 수 없습니다. 모델 로딩에 실패했습니다."
         
         # 2-1) retrieve_top_k 으로 가장 유사한 k개 문장 가져오기
         contexts = retrieve_top_k(question, k)
