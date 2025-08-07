@@ -80,8 +80,8 @@ def main():
     """메인 애플리케이션"""
     initialize_session_state()
     
-    # 모델 로드
-    gen_pipeline = load_model()
+    # 모델 로드 (RAG, 로컬, API 지원)
+    model_interface = load_model()
     
     # 스테이지별 화면 표시
     if st.session_state.stage == "intro":
@@ -89,7 +89,7 @@ def main():
     elif st.session_state.stage == "survey":
         show_survey()
     elif st.session_state.stage == "chat":
-        show_chat(gen_pipeline)
+        show_chat(model_interface)
 
 if __name__ == "__main__":
     main()
