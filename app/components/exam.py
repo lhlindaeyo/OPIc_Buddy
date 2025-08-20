@@ -271,12 +271,25 @@ def show_exam():
             if 'tts_audio_cache' in st.session_state and tts_key in st.session_state['tts_audio_cache']:
                 del st.session_state['tts_audio_cache'][tts_key]
             recorded_answer = answer.strip() if answer and answer.strip() else "무응답"
-            st.session_state.exam_answers.append(recorded_answer)
+            # 답변은 항상 exam_idx 위치에 덮어쓰기 (append가 아니라 update)
+            if len(st.session_state.exam_answers) > exam_idx:
+                st.session_state.exam_answers[exam_idx] = recorded_answer
+            else:
+                # 중간이 비어있을 경우도 안전하게 처리
+                while len(st.session_state.exam_answers) < exam_idx:
+                    st.session_state.exam_answers.append("")
+                st.session_state.exam_answers.append(recorded_answer)
             audio_key = f"audio_data_{exam_idx}"
             answer_audio_data = st.session_state.get(audio_key)
             if "answer_audio_files" not in st.session_state:
                 st.session_state["answer_audio_files"] = []
-            st.session_state["answer_audio_files"].append(answer_audio_data)
+            # 오디오도 동일하게 인덱스별로 덮어쓰기
+            if len(st.session_state["answer_audio_files"]) > exam_idx:
+                st.session_state["answer_audio_files"][exam_idx] = answer_audio_data
+            else:
+                while len(st.session_state["answer_audio_files"]) < exam_idx:
+                    st.session_state["answer_audio_files"].append(None)
+                st.session_state["answer_audio_files"].append(answer_audio_data)
             st.session_state.user_input = ""
             st.session_state.exam_idx += 1
             st.rerun()
