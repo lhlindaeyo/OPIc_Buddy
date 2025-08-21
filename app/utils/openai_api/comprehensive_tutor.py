@@ -366,24 +366,3 @@ Original sample_answer (may be empty/short):
         }
 
 
-# ---------------- 사용 예시 ----------------
-if __name__ == "__main__":
-    questions = [
-        "Tell me about yourself.",
-        "Describe a time you had to solve a problem quickly.",
-        "What do you usually do on weekends?",
-        "What's the last movie you watched and what did you think of it?",
-        "Tell me about your last overseas business trip.",
-    ]
-    answers = [
-        "Hello, my name is Seohyun and I study business administration at CNU in Daejeon. I enjoy movies and casual soccer with friends. Additionally, I love short trips because they help me clear my mind and learn about new places.",
-        "I had to fix a team slide deck right before the presentation because some data was missing. I quickly checked our shared folder, added a simple chart, and double-checked the numbers with my classmate. As a result, our talk went smoothly.",
-        "I usually meet friends, watch a movie at home, and sometimes go for a jog along the river. However, when it rains, I read business case studies and take notes.",
-        "Oppenheimer impressed me with its mix of science and moral conflict. For example, the sound design and long dialogue scenes made me feel the tension. As a result, I kept thinking about the cost of innovation.",
-        "I went to Singapore for a marketing workshop and networking sessions with partners. I joined seminars in the daytime and visited local food markets in the evening to understand the culture. As a result, I gained useful insights and contacts.",
-    ]
-    user_profile = {"name": "Seohyun", "major": "Business & Data", "target_level": "IH"}
-
-    tutor = ComprehensiveOPIcTutor()
-    result = tutor.get_comprehensive_feedback(questions, answers, user_profile)
-    print(json.dumps(result, ensure_ascii=False, indent=2))
